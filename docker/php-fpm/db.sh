@@ -1,3 +1,3 @@
 #!/bin/sh
 
-php /var/www/artisan migrate;
+php /var/www/artisan migrate --force;
