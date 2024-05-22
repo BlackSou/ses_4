@@ -1,4 +1,16 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm-alpine AS base
+
+FROM composer:2.2 AS composer-build
+
+ARG COMPOSER_AUTH='{}'
+
+COPY . /app
+
+WORKDIR /app
+
+RUN composer install --no-suggest --ignore-platform-reqs
+
+FROM base
 
 # Install packages
 RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash supervisor
@@ -20,9 +32,7 @@ COPY ./ /var/www
 WORKDIR /var/www
 
 # Composer
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
-
-RUN composer install
+COPY --from=composer-build /app /var/www/html
 
 CMD php-fpm
 
