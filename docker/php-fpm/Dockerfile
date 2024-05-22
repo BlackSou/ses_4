@@ -1,15 +1,4 @@
-FROM php:8.2-fpm-alpine AS base
-
-FROM composer:2.2 AS composer-build
-
-ARG COMPOSER_AUTH='{}'
-
-COPY ./ /var/www
-WORKDIR /var/www
-
-RUN composer install
-
-FROM base
+FROM php:8.2-fpm-alpine
 
 # Install packages
 RUN apk add --no-cache curl git build-base zlib-dev oniguruma-dev autoconf bash supervisor
@@ -26,8 +15,9 @@ ADD supervisord.conf /etc/supervisor/
 ADD *.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/*.sh
 
-# Composer
-COPY --from=composer-build /usr/bin/composer /usr/bin/composer
+# Source code
+COPY . /var/www
+WORKDIR /var/www
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
