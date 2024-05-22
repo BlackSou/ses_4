@@ -7,7 +7,7 @@ ARG COMPOSER_AUTH='{}'
 COPY ./ /var/www
 WORKDIR /var/www
 
-RUN composer install --no-suggest --ignore-platform-reqs
+RUN composer install
 
 FROM base
 
