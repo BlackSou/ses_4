@@ -18,13 +18,12 @@ services:
             DB_USERNAME: laravel
             DB_PASSWORD: laravel
             MAIL_MAILER: smtp
-            MAIL_HOST: smtp.host.com
-            MAIL_USERNAME: your_mail@mail.com
-            MAIL_PASSWORD: your_pass
-            MAIL_PORT: 25
-            MAIL_DRIVER: smtp
+            MAIL_HOST: sandbox.smtp.mailtrap.io
+            MAIL_USERNAME: mailtrap_username
+            MAIL_PASSWORD: mailtrap_pass
+            MAIL_PORT: 2525
             MAIL_ENCRYPTION: tls
-            MAIL_FROM_ADDRESS: from_mail@mail.com
+            MAIL_FROM_ADDRESS: GsesRate@gses4.app
             MAIL_FROM_NAME: GsesRate
             RATE_API_URL: "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&valcode="
         networks:
