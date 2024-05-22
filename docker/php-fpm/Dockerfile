@@ -20,7 +20,9 @@ WORKDIR /var/www
 # Composer
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
-CMD php-fpm
+RUN composer install
+
+RUN composer dump-autoload
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
