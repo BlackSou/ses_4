@@ -42,6 +42,10 @@ Deployment Docker containers:
 ```
 docker-compose up -d
 ```
+Set up dependencies:
+```
+docker-compose exec -ti php-fpm bash -c "composer install && exit"
+```
 
 Swagger:
 ```
