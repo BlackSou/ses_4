@@ -48,4 +48,6 @@ docker-compose exec -ti php-fpm bash -c "composer install && php artisan migrate
 ```
 
 Swagger:
-```http://localhost:88/api/doc```
+```
+http://localhost:88/api/doc
+```
