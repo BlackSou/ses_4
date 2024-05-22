@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+    php-fpm:
+        container_name: php-fpm
+        build: ./docker/php-fpm/
+        volumes:
+            - .:/var/www/
+            - ./docker/php-fpm/ini:/usr/local/etc/php
+        depends_on:
+            - postgres
+        restart: unless-stopped
+        environment:
+            DB_CONNECTION: pgsql
+            DB_HOST: postgres
+            DB_PORT: 5432
+            DB_DATABASE: laravel
+            DB_USERNAME: laravel
+            DB_PASSWORD: laravel
+            MAIL_MAILER: smtp
+            MAIL_HOST: smtp.host.com
+            MAIL_USERNAME: your_mail@mail.com
+            MAIL_PASSWORD: your_pass
+            MAIL_PORT: 25
+            MAIL_DRIVER: smtp
+            MAIL_ENCRYPTION: tls
+            MAIL_FROM_ADDRESS: from_mail@mail.com
+            MAIL_FROM_NAME: GsesRate
+            RATE_API_URL: "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&valcode="
+        networks:
+            - app-network
+
+    nginx:
+        container_name: nginx
+        build:
+            context: ./docker/nginx
+        volumes:
+            - .:/var/www:rw
+        depends_on:
+            - php-fpm
+        ports:
+            - "88:80"
+        restart: unless-stopped
+        networks:
+            - app-network
+
+    postgres:
+        container_name: postgres
+        image: postgres:alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_HOST_AUTH_METHOD: trust
+        volumes:
+            - app_data:/var/lib/postgresql/data:rw
+        networks:
+            - app-network
+
+volumes:
+    app_data:
+
+networks:
+    app-network:
+        driver: bridge

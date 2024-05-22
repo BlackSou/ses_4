@@ -1,0 +1,90 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "GSES USD application API",
+        "description": "Get the current USD to UAH exchange rate",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/rate": {
+            "get": {
+                "tags": [
+                    "Rate"
+                ],
+                "summary": "Get the current USD to UAH exchange rate",
+                "description": "The request should return the current USD to UAH exchange rate",
+                "operationId": "71d27b5eea169fe3fb19897f94992883",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Header with Accept criteria, should be application/json",
+                        "required": true,
+                        "example": "application/json"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Get current rate"
+                    },
+                    "404": {
+                        "description": "Current rate not found"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/subscribe": {
+            "post": {
+                "tags": [
+                    "Subscribe"
+                ],
+                "summary": "Subscribe the email to receive the current rate",
+                "description": "The request checks whether the email is subscribe if it is not adds it",
+                "operationId": "afdc73dfe99f0af6f02ce5dbf422b37c",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "header with Accept criteria, should be application/json",
+                        "required": true,
+                        "example": "application/json"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "User email",
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully, email added"
+                    },
+                    "409": {
+                        "description": "Unsuccessfully, email is already in the subscribers"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        }
+    }
+}
