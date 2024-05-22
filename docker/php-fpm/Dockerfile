@@ -18,12 +18,8 @@ COPY ./ /var/www
 WORKDIR /var/www
 
 # Composer
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN composer install
-
-RUN composer dump-autoload
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD /usr/local/bin/composer install && supervisord -c /etc/supervisor/supervisord.conf
 
 EXPOSE 8080
